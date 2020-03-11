@@ -1,25 +1,33 @@
 <template>
-  <div>
-    <el-tabs>
-      <el-tab-pane label="User" name="first">User</el-tab-pane>
-      <el-tab-pane label="Config" name="second">Config</el-tab-pane>
-      <el-tab-pane label="Role" name="third">Role</el-tab-pane>
-      <el-tab-pane label="Task" name="fourth">Task</el-tab-pane>
-    </el-tabs>
-
+  <div class="login-contents">
     <div v-if="isAuthenticated">
-      <p>{{ user.name }}でログイン中です</p>
+      <p>{{ user.email }}でログイン中です</p>
       <button @click="logout">ログアウト</button>
       <a href="/member-page">メンバーページへ</a>
     </div>
+
     <div v-else>
-      <h3>ログイン画面</h3>
-      <p class="errorMessage" style="color: red" v-if="valid">{{validError}}</p>
-      <span>メールアドレス</span>
-      <input type="text" v-model="mailAddress">
-      <span>パスワード</span>
-      <input type="password" v-model="password">
-      <button @click="login">ログイン</button>
+      <el-card class="box-card login">
+        <div slot="header" class="clearfix">
+          <span>ログイン</span>
+        </div>
+        <el-form label-width="120px">
+          <p class="errorMessage" style="color: red" v-if="valid">{{validError}}</p>
+          <el-form-item label="メールアドレス">
+            <el-input v-model="mailAddress" label-width="360px"></el-input>
+          </el-form-item>
+          <el-form-item label="パスワード">
+            <el-input type="password" v-model="password"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button style="float: right" type="primary" @click="login">ログイン</el-button>
+          </el-form-item>
+          <hr>
+          <el-form-item label="Googleログイン" class="google-auth">
+            <img src="~/assets/btn_google_signin_light_normal_web@2x.png" alt="Googleでログイン" class="google-login" @click="googleLogin">
+          </el-form-item>
+        </el-form>
+      </el-card>
     </div>
   </div>
 </template>
@@ -56,7 +64,18 @@ export default {
       firebase.auth().signInWithEmailAndPassword(this.mailAddress, this.password)
         .then( user => {
           // this.$store.commit('loginState', this.mailAddress, this.password);
-          this.$router.push('/')
+          this.$router.push('/member-page')
+        })
+        .catch((error) => {
+          this.valid = true;
+        });
+    },
+
+    googleLogin() {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      firebase.auth().signInWithRedirect(provider)
+        .then( user => {
+          this.$router.push('/member-page')
         })
         .catch((error) => {
           this.valid = true;
@@ -80,6 +99,26 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.box-card {
+  width: 560px;
+}
 
+.login {
+  position: relative;
+  top: 100px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  margin: auto;
+}
+
+.google-auth {
+  margin-top: 15px;
+}
+
+.google-login {
+  width: 240px;
+  cursor: pointer;
+}
 </style>
