@@ -23,8 +23,12 @@
             <el-button style="float: right" type="primary" @click="login">ログイン</el-button>
           </el-form-item>
           <hr>
-          <el-form-item label="Googleログイン" class="google-auth">
-            <img src="~/assets/btn_google_signin_light_normal_web@2x.png" alt="Googleでログイン" class="google-login" @click="googleLogin">
+          <span class="sns-btn">SNSでログインする</span>
+          <el-form-item class="google-auth">
+            <img src="~/assets/btn_google_signin_light_normal_web@2x.png" alt="Googleでログイン" class="google-btn" @click="googleLogin">
+          </el-form-item>
+          <el-form-item class="twitter-auth">
+            <img src="~/assets/twitter-button.png" alt="Twitterでログイン" class="twitter-btn" @click="twitterLogin">
           </el-form-item>
         </el-form>
       </el-card>
@@ -82,6 +86,17 @@ export default {
         });
     },
 
+    twitterLogin() {
+      const provider = new firebase.auth.TwitterAuthProvider()
+      firebase.auth().signInWithPopup(provider)
+        .then( user => {
+          this.$router.push('/member-page')
+        })
+        .catch((error) => {
+          this.valid = true;
+        });
+    },
+
     logout() {
       firebase.auth().signOut()
         .then(() => {
@@ -113,11 +128,16 @@ export default {
   margin: auto;
 }
 
+.sns-btn {
+  text-align: center;
+}
+
 .google-auth {
   margin-top: 15px;
 }
 
-.google-login {
+.google-btn, 
+.twitter-btn {
   width: 240px;
   cursor: pointer;
 }

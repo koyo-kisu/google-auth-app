@@ -11,9 +11,13 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.27",
+    "@fortawesome/free-solid-svg-icons": "^5.12.1",
+    "@fortawesome/vue-fontawesome": "^0.1.9",
     "element-ui": "^2.4.11",
     "firebase": "^7.10.0",
     "nuxt": "^2.0.0",
+    "nuxt-fontawesome": "^0.4.0",
     "vuex-persistedstate": "^2.7.1"
   },
   "devDependencies": {}
