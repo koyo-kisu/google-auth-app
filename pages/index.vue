@@ -3,7 +3,7 @@
     <div v-if="isAuthenticated">
       <p>{{ user.email }}でログイン中です</p>
       <button @click="logout">ログアウト</button>
-      <a href="/member-page">メンバーページへ</a>
+      <a href="/only_member">メンバーページ</a>
     </div>
 
     <div v-else>
@@ -23,7 +23,6 @@
             <el-button style="float: right" type="primary" @click="login">ログイン</el-button>
           </el-form-item>
           <hr>
-          <span class="sns-btn">SNSでログインする</span>
           <el-form-item class="google-auth">
             <img src="~/assets/btn_google_signin_light_normal_web@2x.png" alt="Googleでログイン" class="google-btn" @click="googleLogin">
           </el-form-item>
@@ -55,6 +54,7 @@ export default {
     ...mapGetters(['isAuthenticated'])
   },
 
+// ログインが完了したか判定
   mounted() {
     firebase.auth().onAuthStateChanged((user) => {
       this.setUser(user)
@@ -67,8 +67,7 @@ export default {
     login() {
       firebase.auth().signInWithEmailAndPassword(this.mailAddress, this.password)
         .then( user => {
-          // this.$store.commit('loginState', this.mailAddress, this.password);
-          this.$router.push('/member-page')
+          this.$router.push('/only_member')
         })
         .catch((error) => {
           this.valid = true;
@@ -79,7 +78,7 @@ export default {
       const provider = new firebase.auth.GoogleAuthProvider();
       firebase.auth().signInWithRedirect(provider)
         .then( user => {
-          this.$router.push('/member-page')
+          this.$router.push('/only_member')
         })
         .catch((error) => {
           this.valid = true;
@@ -88,9 +87,9 @@ export default {
 
     twitterLogin() {
       const provider = new firebase.auth.TwitterAuthProvider()
-      firebase.auth().signInWithPopup(provider)
+      firebase.auth().signInWithRedirect(provider)
         .then( user => {
-          this.$router.push('/member-page')
+          this.$router.push('/only_member')
         })
         .catch((error) => {
           this.valid = true;
@@ -126,10 +125,6 @@ export default {
   bottom: 0px;
   left: 0px;
   margin: auto;
-}
-
-.sns-btn {
-  text-align: center;
 }
 
 .google-auth {
