@@ -1,17 +1,22 @@
 <template>
   <div>
-    <h1>ログインしていないと見れないページ</h1>
-    <button @click="logout">ログアウト</button>
+    <div v-if="isAuthenticated">
+      <h1>ログインしていないと見れないページ</h1>
+      <button @click="logout">ログアウト</button>
+    </div>
+    <div v-else>
+      <h1>ログインしてください</h1>
+    </div>
   </div>
 </template>
 
 <script>
 import firebase from '~/plugins/firebase';
-import { mapActions, mapState, mapGetters } from 'vuex'
+import { mapActions, mapState, mapGetters } from 'vuex';
 
 export default {
   middleware: 'authenticated',
-  
+
   computed: {
     ...mapState(['user']),
     ...mapGetters(['isAuthenticated'])
