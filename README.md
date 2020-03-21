@@ -19,4 +19,7 @@ $ npm run start
 $ npm run generate
 ```
 
+# sample_repo
+# this is new branch
+
 For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
